@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: risk-api
+  namespace: fraudshield
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: risk-api
+  template:
+    metadata:
+      labels:
+        app: risk-api
+    spec:
+      containers:
+        - name: risk-api
+          image: fraudshield/risk-api:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres.fraudshield.svc.cluster.local:5432/fraudshield
+            - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+              value: kafka.fraudshield.svc.cluster.local:9092
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080

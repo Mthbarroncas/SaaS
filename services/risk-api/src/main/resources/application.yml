@@ -1,0 +1,48 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: fraudshield-risk-api
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fraudshield
+    username: fraudshield
+    password: fraudshield
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  flyway:
+    enabled: true
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+fraudshield:
+  security:
+    merchant-api-key: change-me
+    dashboard-bearer-token: change-dashboard-token
+  messaging:
+    kafka-enabled: true
+  risk:
+    score-thresholds:
+      low-max: 30
+      medium-max: 60

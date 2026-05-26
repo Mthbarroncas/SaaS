@@ -1,0 +1,20 @@
+.next
+node_modules
+target
+.idea
+.vscode
+*.log
+.tools
+
+### AL ###
+# Template for AL projects for Dynamics 365 Business Central
+.alcache/
+.alpackages/
+.snapshots/
+.output/
+*.app
+rad.json
+*.g.xlf
+*.bclicense
+*.flf
+TestResults.xml

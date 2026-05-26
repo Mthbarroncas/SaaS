@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: risk-api
+spec:
+  replicas: {{ .Values.riskApi.replicas }}
+  selector:
+    matchLabels:
+      app: risk-api
+  template:
+    metadata:
+      labels:
+        app: risk-api
+    spec:
+      containers:
+        - name: risk-api
+          image: "{{ .Values.riskApi.image.repository }}:{{ .Values.riskApi.image.tag }}"
+          ports:
+            - containerPort: 8080

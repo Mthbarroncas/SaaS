@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #f5efe4;
+  --ink: #0f172a;
+  --card: rgba(255, 255, 255, 0.7);
+  --line: rgba(15, 23, 42, 0.12);
+  --accent: #db5a42;
+  --accent-2: #2f5d50;
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(219, 90, 66, 0.16), transparent 28%),
+    radial-gradient(circle at 85% 20%, rgba(47, 93, 80, 0.18), transparent 24%),
+    linear-gradient(180deg, #f8f2e8, #efe5d6);
+  color: var(--ink);
+}
