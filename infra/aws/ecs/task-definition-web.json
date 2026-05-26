@@ -1,0 +1,37 @@
+{
+  "family": "fraudshield-web",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::<account-id>:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::<account-id>:role/fraudshieldWebTaskRole",
+  "containerDefinitions": [
+    {
+      "name": "web",
+      "image": "<account-id>.dkr.ecr.<region>.amazonaws.com/fraudshield-web:latest",
+      "portMappings": [
+        {
+          "containerPort": 3000,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "environment": [
+        { "name": "NEXT_PUBLIC_API_BASE_URL", "value": "https://api.example.com/api/v1" },
+        { "name": "FRAUDSHIELD_TENANT_ID", "value": "demo-store" }
+      ],
+      "secrets": [
+        { "name": "FRAUDSHIELD_API_KEY", "valueFrom": "FRAUDSHIELD_API_KEY" }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/fraudshield-web",
+          "awslogs-region": "<region>",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+}

@@ -107,10 +107,14 @@ const fallbackDevices: DeviceItem[] = [
 ];
 
 async function getJson<T>(path: string): Promise<T> {
-  const response = await fetch(`http://localhost:8080/api/v1${path}`, {
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8080/api/v1";
+  const apiKey = process.env.FRAUDSHIELD_API_KEY ?? "change-me";
+  const tenantId = process.env.FRAUDSHIELD_TENANT_ID ?? "demo-store";
+
+  const response = await fetch(`${apiBaseUrl}${path}`, {
     headers: {
-      "X-API-Key": "change-me",
-      "X-Tenant-Id": "demo-store",
+      "X-API-Key": apiKey,
+      "X-Tenant-Id": tenantId,
     },
     cache: "no-store",
   });

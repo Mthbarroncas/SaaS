@@ -1,0 +1,42 @@
+{
+  "family": "fraudshield-risk-api",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "1024",
+  "executionRoleArn": "arn:aws:iam::<account-id>:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::<account-id>:role/fraudshieldRiskApiTaskRole",
+  "containerDefinitions": [
+    {
+      "name": "risk-api",
+      "image": "<account-id>.dkr.ecr.<region>.amazonaws.com/fraudshield-risk-api:latest",
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "environment": [
+        { "name": "SPRING_PROFILES_ACTIVE", "value": "default" },
+        { "name": "FRAUDSHIELD_MESSAGING_KAFKA_ENABLED", "value": "true" }
+      ],
+      "secrets": [
+        { "name": "SPRING_DATASOURCE_URL", "valueFrom": "SPRING_DATASOURCE_URL" },
+        { "name": "SPRING_DATASOURCE_USERNAME", "valueFrom": "SPRING_DATASOURCE_USERNAME" },
+        { "name": "SPRING_DATASOURCE_PASSWORD", "valueFrom": "SPRING_DATASOURCE_PASSWORD" },
+        { "name": "SPRING_KAFKA_BOOTSTRAP_SERVERS", "valueFrom": "SPRING_KAFKA_BOOTSTRAP_SERVERS" },
+        { "name": "FRAUDSHIELD_SECURITY_MERCHANT_API_KEY", "valueFrom": "FRAUDSHIELD_SECURITY_MERCHANT_API_KEY" },
+        { "name": "FRAUDSHIELD_SECURITY_DASHBOARD_BEARER_TOKEN", "valueFrom": "FRAUDSHIELD_SECURITY_DASHBOARD_BEARER_TOKEN" }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/fraudshield-risk-api",
+          "awslogs-region": "<region>",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+}

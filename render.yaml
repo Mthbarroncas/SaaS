@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: fraudshield-web
+    runtime: docker
+    rootDir: apps/web
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    envVars:
+      - key: NEXT_PUBLIC_API_BASE_URL
+        value: https://fraudshield-risk-api.onrender.com/api/v1
+      - key: FRAUDSHIELD_API_KEY
+        sync: false
+      - key: FRAUDSHIELD_TENANT_ID
+        value: demo-store
+
+  - type: web
+    name: fraudshield-risk-api
+    runtime: docker
+    rootDir: services/risk-api
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: default
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+      - key: SPRING_KAFKA_BOOTSTRAP_SERVERS
+        sync: false
+      - key: FRAUDSHIELD_SECURITY_MERCHANT_API_KEY
+        sync: false
+      - key: FRAUDSHIELD_SECURITY_DASHBOARD_BEARER_TOKEN
+        sync: false
+      - key: FRAUDSHIELD_MESSAGING_KAFKA_ENABLED
+        value: "true"
